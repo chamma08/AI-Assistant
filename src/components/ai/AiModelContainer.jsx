@@ -13,10 +13,10 @@ const AiModelContainer = () => {
       >
       <Suspense fallback="loading...">
         <Stage environment="night" intensity={5}>
-          <A position={[0,-73,0]}/>
+          <A position={[0,70,0]}/>
         </Stage>
         <OrbitControls enableZoom={false}/>
-        <PerspectiveCamera position={[0, 40, 200]} zoom={3.7} makeDefault />
+        <PerspectiveCamera position={[0, -40, 200]} zoom={2.7} makeDefault />
       </Suspense>
     </Canvas>
   );

@@ -617,12 +617,12 @@ const AiVoiceInterface = () => {
             <motion.button
               className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
                 isListening
-                  ? "bg-red-500 shadow-orange-200"
+                  ? "bg-red-700 shadow-orange-200"
                   : isProcessing
                   ? "bg-yellow-500"
                   : isSpeaking
                   ? "bg-green-500"
-                  : "bg-red-500"
+                  : "bg-red-700"
               }`}
               onClick={toggleListening}
               disabled={isProcessing}
@@ -686,7 +686,7 @@ const AiVoiceInterface = () => {
       </div>
       
       {/* Settings Modal */}
-      <dialog id="settings-modal" className="bg-white rounded-xl p-6 shadow-2xl border border-gray-200 w-11/12 max-w-lg mx-auto">
+      <dialog id="settings-modal" className="bg-white rounded-xl p-6 shadow-2xl mt-20 border border-gray-200 w-11/12 max-w-lg mx-auto">
         <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
           <h2 className="text-2xl font-bold text-black">Voice Assistant Settings</h2>
           <button 
@@ -728,7 +728,7 @@ const AiVoiceInterface = () => {
         <div className="flex justify-end">
           <button
             onClick={() => document.getElementById('settings-modal').close()}
-            className="bg-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md"
+            className="bg-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 px-6 rounded-xl transition-colors shadow-md"
           >
             Close
           </button>

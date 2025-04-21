@@ -40,7 +40,7 @@
 .hTitle {
   margin-top: 50px;
   font-size: 100px;
-  color: rgb(0, 30, 64);
+  color: rgb(67, 39, 0);
 }
 
 .hTitle span {
@@ -85,7 +85,7 @@
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  background-color: #2f204e;
+  background-color: #000000;
   border-bottom-right-radius: 10px;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .followText {
-  background-color: #022850;
+  background-color: #363636;
   font-size: 12px;
   rotate: 90deg;
   width: max-content;
@@ -128,11 +128,12 @@
 .bubble {
   width: 100%;
   height: 100px;
-  background-color: white;
-  color: #555;
+  background-color: rgba(255, 255, 255, 0.504);
+  color: #1d1c1c;
   padding: 24px;
   font-size: 18px;
   border-radius: 20px 20px 0px 20px;
+  font-weight: 600;
 }
 
 .bubbleContainer img {
@@ -140,7 +141,7 @@
   height: 50px;
   border-radius: 100%;
   object-fit: cover;
-  background-color: #011d45;
+  background-color: #230041;
 }
 
 .certificate {

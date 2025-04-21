@@ -1,34 +1,42 @@
-// import Hero from "./components/hero/Hero";
-// import Services from "./components/services/Services";
-// import Portfolio from "./components/portfolio/Portfolio";
-// import Contact from "./components/contact/Contact";
-
 import { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LazyLoad from "react-lazyload";
+import Ai from "./pages/Ai";
 
+// Lazy loading components
 const Hero = lazy(() => import("./components/hero/Hero"));
 const Services = lazy(() => import("./components/services/Services"));
-const Portfolio = lazy(() => import("./components/portfolio/Portfolio"));
-const Contact = lazy(() => import("./components/contact/Contact"));
 
-const App = () => {
+// Home component for the "/" route
+const Home = () => {
   return (
     <div className="container">
       <Suspense fallback={"loading..."}>
         <LazyLoad height={"100vh"} offset={-100}>
-          <section id="#home">
+          <section id="home">
             <Hero />
           </section>
         </LazyLoad>
       </Suspense>
       <Suspense fallback={"loading..."}>
         <LazyLoad height={"100vh"} offset={-100}>
-          <section id="#services">
+          <section id="services">
             <Services />
-          </section>{" "}
+          </section>
         </LazyLoad>
       </Suspense>
     </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/ai" element={<Ai />} />
+      </Routes>
+    </Router>
   );
 };
 

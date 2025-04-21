@@ -2,6 +2,7 @@
   height: 100%;
   overflow: hidden;
   display: flex;
+  width: 100%;
 }
 
 .sSection {
@@ -15,6 +16,7 @@
   font-size: 88px;
   margin-bottom: 24px;
 }
+
 
 .serviceList {
   display: flex;
@@ -134,3 +136,4 @@
     display: none;
   }
 }
+

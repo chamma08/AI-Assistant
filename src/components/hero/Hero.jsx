@@ -54,7 +54,7 @@ const Hero = () => {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
-          className="hTitle"
+          className="hTitle font-bold"
         >
           Hey There,
           <br />
@@ -151,7 +151,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
         {/* BUBBLE */}
-        <Speech />
+        <Speech/>
         {/* CERTIFICATE */}
         {/* <motion.div
           animate={{ opacity: [0, 1] }}

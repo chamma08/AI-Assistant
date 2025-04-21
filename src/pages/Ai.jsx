@@ -7,9 +7,9 @@ import {
   ArrowRight,
   Speaker,
   Settings,
+  Loader,
   Zap,
-  House,
-  Loader
+  Sparkles
 } from "lucide-react";
 import AiModelContainer from "../components/ai/AiModelContainer";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,6 @@ const AiVoiceInterface = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isPaused, setIsPaused] = useState(false); // Track if user is pausing
-  const [showSettings, setShowSettings] = useState(false); // For mobile settings toggle
   
   // AI conversation history
   const [conversationHistory, setConversationHistory] = useState([]);
@@ -287,7 +286,7 @@ const AiVoiceInterface = () => {
     }
   };
 
-  // Enhanced AI response handling - FIXED
+  // Enhanced AI response handling
   const handleAiResponse = async (text) => {
     if (!text) {
       setTimeout(startListening, 500);
@@ -304,7 +303,7 @@ const AiVoiceInterface = () => {
         { role: 'user', content: text }
       ];
       
-      // Create a cleaner prompt - FIXED: Don't include "Assistant:" multiple times
+      // Create a cleaner prompt
       let prompt = '';
       if (updatedHistory.length > 0) {
         // Only take the last few messages to avoid repetition
@@ -357,7 +356,7 @@ const AiVoiceInterface = () => {
             }
           }
           
-          // If we got a response, use it - FIXED: Clean up response
+          // If we got a response, use it
           if (response) {
             // Clean the response to prevent repetition patterns
             let rawResponse = response.generated_text.trim();
@@ -387,7 +386,7 @@ const AiVoiceInterface = () => {
         aiResponse = generateFallbackResponse(text);
       }
       
-      // Update conversation history - FIXED: Limit history size better
+      // Update conversation history
       const newHistory = [
         ...updatedHistory,
         { role: 'assistant', content: aiResponse }
@@ -414,30 +413,29 @@ const AiVoiceInterface = () => {
     }
   };
   
-  // Enhanced fallback response generator - IMPROVED
+  // Enhanced fallback response generator
   const generateFallbackResponse = (text) => {
     const userTextLower = text.toLowerCase();
     
-    // Added a personalized name and improved responses
     if (userTextLower.includes("hello") || userTextLower.includes("hi")) {
-      return "Hello there! I'm Bailey, your AI assistant. How can I help you today?";
+      return "Hello there! I'm FluentMe AI, your language assistant. How can I help you today?";
     } else if (userTextLower.includes("how are you")) {
       return "I'm doing well, thank you for asking! How are you doing today?";
     } else if (userTextLower.includes("weather")) {
-      return "I don't have access to real-time weather data, but I'd be happy to help you with something else.";
+      return "I don't have access to real-time weather data, but I'd be happy to help you with language learning.";
     } else if (userTextLower.includes("time")) {
       const now = new Date();
       return `The current time is ${now.toLocaleTimeString()}.`;
     } else if (userTextLower.includes("name")) {
-      return "My name is Bailey. I'm your AI voice assistant. What would you like to talk about?";
+      return "My name is FluentMe AI. I'm your language assistant. What would you like to practice today?";
     } else if (userTextLower.includes("thank")) {
-      return "You're welcome! I'm glad I could help. Anything else you'd like to chat about?";
+      return "You're welcome! I'm glad I could help. Anything else you'd like to practice?";
     } else if (userTextLower.includes("help")) {
-      return "I'm here to help! You can ask me questions, chat with me, or just tell me what's on your mind.";
+      return "I'm here to help with your language practice! You can speak to me in any language, and I'll help you improve your fluency.";
     } else if (userTextLower.includes("bye") || userTextLower.includes("goodbye")) {
-      return "Goodbye! It was nice talking with you. Feel free to chat again anytime!";
+      return "Goodbye! It was nice practicing with you. Feel free to return anytime for more language practice!";
     } else {
-      return `I heard you say: "${text}". I'm currently operating in offline mode with limited responses. What would you like to know more about?`;
+      return `I heard you say: "${text}". Let's continue our language practice. What topic would you like to discuss next?`;
     }
   };
   
@@ -505,105 +503,224 @@ const AiVoiceInterface = () => {
     }
   };
 
-  // Toggle settings panel for mobile
-  const toggleSettings = () => {
-    setShowSettings(!showSettings);
+  // Settings modal functions
+  const openSettings = () => {
+    document.getElementById('settings-modal').showModal();
   };
 
-  // Animate each letter
-  const AnimatedText = ({ text, className }) => {
-    return (
-      <motion.span>
-        {text.split("").map((char, index) => (
-          <motion.span
-            key={index}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              delay: index * 0.05,
-              duration: 0.3,
-              type: "spring",
-              stiffness: 100,
-            }}
-            className={className}
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        ))}
-      </motion.span>
-    );
-  };
+  // Wave animation component for visual feedback
+  const WaveAnimation = () => (
+    <div className="flex space-x-1 justify-center items-center h-12">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <motion.div
+          key={i}
+          className="w-1 h-8 bg-orange-400 rounded-full"
+          animate={{
+            height: [16, 32, 16],
+            opacity: [0.6, 1, 0.6]
+          }}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            delay: i * 0.1,
+            ease: "easeInOut"
+          }}
+        />
+      ))}
+    </div>
+  );
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-blue-900 min-h-screen flex flex-col relative">
-      {/* Header Area with Responsive Layout */}
-      <div className="w-full flex flex-wrap justify-between items-center p-4 sm:p-6">
-        {/* AI Logo - Left */}
-        <motion.div
-          className="flex items-center"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="bg-white/20 p-2 sm:p-3 rounded-full backdrop-blur-xl">
-            <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
-          </div>
-          <span className="ml-2 sm:ml-3 text-white font-semibold text-base sm:text-lg">
-            AI Assistant
-          </span>
-        </motion.div>
-
-        {/* Button Group - Right (Responsive) */}
-        <div className="flex items-center space-x-2 sm:space-x-4">
-          {/* Settings Button */}
-          <motion.button
-            onClick={() => document.getElementById('settings-modal').showModal()}
-            className="bg-white/20 p-2 sm:p-3 rounded-full backdrop-blur-xl hover:bg-white/30 transition-all duration-300"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Settings className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-          </motion.button>
-
-          {/* Home Button */}
-          <motion.button
-            onClick={handleHomeNavigation}
-            className="bg-white/20 p-2 sm:p-3 rounded-full backdrop-blur-xl hover:bg-white/30 transition-all duration-300"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <House className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-          </motion.button>
+    <div className="bg-gray-50 min-h-screen flex flex-col relative">
+      {/* Header Bar */}
+      <motion.div 
+        className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 px-6 flex justify-between items-center shadow-md"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="flex items-center">
+          <Sparkles className="w-6 h-6 mr-2" />
+          <h1 className="text-xl font-bold">FluentMe AI</h1>
         </div>
-      </div>
+        <button 
+          onClick={openSettings}
+          className="p-2 rounded-full hover:bg-orange-600 transition-colors"
+        >
+          <Settings className="w-5 h-5 text-white" />
+        </button>
+      </motion.div>
 
-      {/* Settings Modal - Made Responsive */}
-      <dialog id="settings-modal" className="bg-gray-900/95 text-white rounded-xl p-4 sm:p-6 backdrop-blur-xl shadow-2xl border border-blue-500/30 w-11/12 max-w-lg mx-auto">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-blue-400">Voice Assistant Settings</h2>
+      {/* Main Content */}
+      <div className="flex flex-col flex-grow px-4 py-8 md:px-8 md:py-12 max-w-5xl mx-auto w-full">
+        {/* Top Container - AI Response Area */}
+        <motion.div
+          className="w-full bg-white rounded-3xl border border-gray-200 p-6 shadow-lg mb-8 flex flex-col"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ minHeight: '320px' }}
+        >
+          {/* Glass effect panel at the top */}
+          <div className="bg-gradient-to-r from-orange-400 to-red-400 text-white rounded-xl p-4 mb-6 shadow-md flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="bg-white rounded-full p-2 mr-3">
+                <Speaker className="w-5 h-5 text-orange-500" />
+              </div>
+              <h2 className="text-xl font-bold">AI Assistant</h2>
+            </div>
+            
+            {/* Wave animation when speaking */}
+            {isSpeaking && <WaveAnimation />}
+          </div>
+          
+          {/* AI Model Container with enhanced styling */}
+          <div className="flex-grow flex items-center justify-center mb-6 relative">
+            {/* Add subtle pulse animation */}
+            <motion.div
+              className="absolute inset-0 bg-orange-100 rounded-full opacity-30"
+              animate={{ 
+                scale: [1, 1.05, 1],
+                opacity: [0.1, 0.2, 0.1]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={{ width: '80%', height: '80%', margin: 'auto' }}
+            />
+            <AiModelContainer />
+          </div>
+          
+          {/* AI Response Text Area with modern styling */}
+          <div className="bg-gradient-to-r from-orange-400 to-red-400 rounded-xl p-5 w-full shadow-md">
+            <motion.p 
+              className="text-lg text-center text-white font-medium"
+              animate={isSpeaking ? { opacity: [0.9, 1, 0.9] } : {}}
+              transition={{ duration: 1.5, repeat: isSpeaking ? Infinity : 0 }}
+            >
+              {aiText || "I'm listening to you..."}
+            </motion.p>
+          </div>
+        </motion.div>
+        
+        {/* Bottom Container - Microphone Area with enhanced styling */}
+        <motion.div
+          className="w-full bg-white rounded-3xl p-6 shadow-md border border-gray-200"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="flex items-center">
+            {/* Enhanced Microphone Button */}
+            <motion.button
+              className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
+                isListening
+                  ? "bg-orange-500 shadow-orange-200"
+                  : isProcessing
+                  ? "bg-yellow-500"
+                  : isSpeaking
+                  ? "bg-green-500"
+                  : "bg-orange-500"
+              }`}
+              onClick={toggleListening}
+              disabled={isProcessing}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              animate={isListening ? {
+                boxShadow: ["0 0 0 0 rgba(249, 115, 22, 0.7)", "0 0 0 10px rgba(249, 115, 22, 0)", "0 0 0 0 rgba(249, 115, 22, 0)"],
+              } : {}}
+              transition={isListening ? {
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "loop"
+              } : {}}
+            >
+              {isListening ? (
+                <Mic className="w-10 h-10 text-white" />
+              ) : isProcessing ? (
+                <Loader className="w-10 h-10 text-white animate-spin" />
+              ) : isSpeaking ? (
+                <Volume2 className="w-10 h-10 text-white" />
+              ) : (
+                <Mic className="w-10 h-10 text-white" />
+              )}
+            </motion.button>
+            
+            {/* User Text Area with enhanced styling */}
+            <div className="ml-6 flex-grow">
+              <div className="bg-gray-50 rounded-xl p-4 shadow-md border border-gray-100">
+                <textarea
+                  className="w-full h-20 bg-transparent text-gray-800 resize-none focus:outline-none font-medium"
+                  value={isProcessing ? "Processing your speech..." : userText}
+                  readOnly
+                  placeholder="Speak now..."
+                />
+              </div>
+              
+              {/* Status Text with nicer styling */}
+              <div className="mt-3 text-sm font-medium flex items-center">
+                <span className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                  isListening ? "bg-orange-500 animate-pulse" : 
+                  isProcessing ? "bg-yellow-500" : 
+                  isSpeaking ? "bg-green-500" : 
+                  "bg-gray-400"
+                }`}></span>
+                <span className="text-gray-700">
+                  {isListening ? 
+                    isPaused ? "Paused... Are you still speaking?" : "Listening..." 
+                    : isProcessing ? "Processing speech..." 
+                    : isSpeaking ? "Speaking..." 
+                    : "Click microphone to start"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* Footer */}
+      <div className="bg-white border-t border-gray-200 py-4 px-6 text-center">
+        <p className="text-gray-500 text-sm">© 2025 FluentMe • Powered by Hugging Face</p>
+      </div>
+      
+      {/* Settings Modal */}
+      <dialog id="settings-modal" className="bg-white rounded-xl p-6 shadow-2xl border border-gray-200 w-11/12 max-w-lg mx-auto">
+        <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
+          <h2 className="text-2xl font-bold text-orange-500">Voice Assistant Settings</h2>
+          <button 
+            onClick={() => document.getElementById('settings-modal').close()}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
         
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-2">Text-to-Speech Options</h3>
+          <h3 className="text-lg font-semibold mb-3 text-gray-800">Text-to-Speech Options</h3>
           
-          <p className="text-xs sm:text-sm text-gray-400">
+          <p className="text-sm text-gray-600 mb-3">
             Using your browser's built-in Web Speech API for voice recognition and synthesis.
           </p>
           
-          <p className="text-xs sm:text-sm text-gray-300 mt-3">
-            For best results, use Chrome or Edge browsers, which provide the most reliable voice recognition.
-          </p>
+          <div className="bg-orange-50 border-l-4 border-orange-500 p-4 mb-4 rounded">
+            <p className="text-sm text-orange-700">
+              For best results, use Chrome or Edge browsers, which provide the most reliable voice recognition.
+            </p>
+          </div>
           
-          <div className="mt-4 p-3 bg-blue-900/50 rounded-lg">
-            <h4 className="text-sm font-medium mb-1">AI Status:</h4>
-            <p className="text-xs text-gray-300">
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <h4 className="text-sm font-medium mb-2 flex items-center">
+              <Zap className="w-4 h-4 mr-1 text-yellow-500" />
+              AI Status:
+            </h4>
+            <p className="text-sm flex items-center">
               {hf.current 
-                ? "AI Service: Connected ✓" 
-                : "AI Service: Not connected ✗ (Check your .env configuration)"}
+                ? <span className="flex items-center text-green-600"><span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>AI Service: Connected</span>
+                : <span className="flex items-center text-orange-600"><span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>AI Service: Not connected (Check configuration)</span>}
             </p>
           </div>
         </div>
@@ -611,132 +728,12 @@ const AiVoiceInterface = () => {
         <div className="flex justify-end">
           <button
             onClick={() => document.getElementById('settings-modal').close()}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base"
+            className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md"
           >
             Close
           </button>
         </div>
       </dialog>
-
-      {/* Main Heading - Responsive */}
-      <motion.header
-        className="w-full text-center py-2 sm:py-4"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">
-          <AnimatedText text="AI Voice Assistant" className="inline-block" />
-          <span className="block text-xs sm:text-sm font-normal text-gray-300 mt-1 sm:mt-2">
-            Always listening
-          </span>
-        </h1>
-      </motion.header>
-
-      {/* Main Content - Fully Responsive Layout */}
-      <div className="flex flex-col lg:flex-row items-center justify-center flex-grow px-3 sm:px-6 pb-4 sm:pb-6">
-        {/* Left Section - AI Model (Show first on all devices) */}
-        <div className="w-full lg:w-3/5 flex flex-col items-center justify-center mb-4 lg:mb-0 lg:mr-4 order-1">
-          {/* Smaller container for AI model with responsive height */}
-          <div className="w-full max-w-4xl bg-gradient-to-b from-blue-900 to-blue-950 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-2xl mt-2 sm:mt-5 relative overflow-hidden">
-            {/* Responsive height container */}
-            <div className="h-[200px] sm:h-[300px] md:h-[400px] flex items-center justify-center">
-              <div className="w-full h-full flex items-center justify-center">
-                <AiModelContainer />
-              </div>
-            </div>
-          </div>
-
-          {/* AI Speaking Text Area - Responsive */}
-          <motion.div
-            className="w-full max-w-4xl mt-2 sm:mt-4 bg-white/10 backdrop-blur-3xl rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-xl"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center text-white mb-1 sm:mb-2">
-              <Speaker className="mr-1 sm:mr-2 text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
-              <h3 className="text-base sm:text-lg font-semibold">AI Response</h3>
-            </div>
-            <div className="w-full min-h-[60px] sm:min-h-[100px] flex items-center justify-center">
-              <p className="text-base sm:text-xl font-semibold text-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                {aiText || "I'm listening to you..."}
-              </p>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Section - Voice Interface (Always second) */}
-        <motion.div
-          className="w-full lg:w-2/5 bg-white/10 backdrop-blur-xl border border-white/20 mt-2 sm:mt-4 lg:mt-7 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-2xl order-2"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="text-center text-white mb-3 sm:mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 flex items-center justify-center gap-1 sm:gap-2">
-              Talk to AI <ArrowRight className="inline-block w-4 h-4 sm:w-6 sm:h-6" />
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Automatically listening - speak naturally
-            </p>
-          </div>
-
-          {/* Voice Button - Responsive size */}
-          <div className="flex justify-center mb-3 sm:mb-4">
-            <button
-              className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 ease-in-out ${
-                isListening
-                  ? isPaused
-                    ? "bg-orange-500/80 animate-pulse"
-                    : "bg-red-500/80 animate-pulse"
-                  : isProcessing
-                  ? "bg-yellow-500/80"
-                  : isSpeaking
-                  ? "bg-green-500/80"
-                  : "bg-blue-500/80 hover:bg-blue-600/80"
-              }`}
-              onClick={toggleListening}
-              disabled={isProcessing}
-            >
-              {isListening ? (
-                isPaused ? (
-                  <MicOff className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-                ) : (
-                  <Mic className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-                )
-              ) : isProcessing ? (
-                <Loader className="w-6 h-6 sm:w-8 sm:h-8 text-white animate-spin" />
-              ) : isSpeaking ? (
-                <Volume2 className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-              ) : (
-                <Mic className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-              )}
-            </button>
-          </div>
-
-          {/* Status Text - Responsive font size */}
-          <div className="flex justify-center items-center mb-2 sm:mb-3">
-            <span className="text-xs text-blue-300">
-              {isListening ? 
-                isPaused ? "Paused... Are you still speaking?" : "Listening... (Click to finish)" 
-                : isProcessing ? "Processing speech..." 
-                : isSpeaking ? "Speaking..." 
-                : "Click microphone to start"}
-            </span>
-          </div>
-
-          {/* User Text Output - Responsive height */}
-          <div className="bg-black/30 rounded-lg sm:rounded-xl p-2 sm:p-4 mb-1 sm:mb-2">
-            <textarea
-              className="w-full h-20 sm:h-32 bg-transparent text-white text-center text-sm sm:text-base resize-none focus:outline-none"
-              value={isProcessing ? "Processing your speech..." : userText}
-              readOnly
-              placeholder="I'm listening... say something"
-            />
-          </div>
-        </motion.div>
-      </div>
     </div>
   );
 };

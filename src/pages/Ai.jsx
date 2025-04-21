@@ -514,7 +514,7 @@ const AiVoiceInterface = () => {
       {[1, 2, 3, 4, 5].map((i) => (
         <motion.div
           key={i}
-          className="w-1 h-8 bg-orange-400 rounded-full"
+          className="w-1 h-8 bg-red-600 rounded-full"
           animate={{
             height: [16, 32, 16],
             opacity: [0.6, 1, 0.6]
@@ -534,7 +534,7 @@ const AiVoiceInterface = () => {
     <div className="bg-gray-50 min-h-screen flex flex-col relative">
       {/* Header Bar */}
       <motion.div 
-        className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 px-6 flex justify-between items-center shadow-md"
+        className="bg-gradient-to-r from-red-500 to-red-600 text-white py-4 px-6 flex justify-between items-center shadow-md"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -555,14 +555,14 @@ const AiVoiceInterface = () => {
       <div className="flex flex-col flex-grow px-4 py-8 md:px-8 md:py-12 max-w-5xl mx-auto w-full">
         {/* Top Container - AI Response Area */}
         <motion.div
-          className="w-full bg-white rounded-3xl border border-gray-200 p-6 shadow-lg mb-8 flex flex-col"
+          className="w-full bg-white rounded-3xl border border-gray-300 p-6 shadow-lg mb-8 flex flex-col"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           style={{ minHeight: '320px' }}
         >
           {/* Glass effect panel at the top */}
-          <div className="bg-gradient-to-r from-orange-400 to-red-400 text-white rounded-xl p-4 mb-6 shadow-md flex items-center justify-between">
+          <div className="bg-red-700 text-white rounded-3xl p-4 mb-6 shadow-md flex items-center justify-between">
             <div className="flex items-center">
               <div className="bg-white rounded-full p-2 mr-3">
                 <Speaker className="w-5 h-5 text-orange-500" />
@@ -578,7 +578,7 @@ const AiVoiceInterface = () => {
           <div className="flex-grow flex items-center justify-center mb-6 relative">
             {/* Add subtle pulse animation */}
             <motion.div
-              className="absolute inset-0 bg-orange-100 rounded-full opacity-30"
+              className="absolute inset-0 bg-red-100 rounded-full opacity-30"
               animate={{ 
                 scale: [1, 1.05, 1],
                 opacity: [0.1, 0.2, 0.1]
@@ -594,7 +594,7 @@ const AiVoiceInterface = () => {
           </div>
           
           {/* AI Response Text Area with modern styling */}
-          <div className="bg-gradient-to-r from-orange-400 to-red-400 rounded-xl p-5 w-full shadow-md">
+          <div className="bg-red-500 rounded-2xl p-5 w-full shadow-md">
             <motion.p 
               className="text-lg text-center text-white font-medium"
               animate={isSpeaking ? { opacity: [0.9, 1, 0.9] } : {}}
@@ -617,12 +617,12 @@ const AiVoiceInterface = () => {
             <motion.button
               className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
                 isListening
-                  ? "bg-orange-500 shadow-orange-200"
+                  ? "bg-red-500 shadow-orange-200"
                   : isProcessing
                   ? "bg-yellow-500"
                   : isSpeaking
                   ? "bg-green-500"
-                  : "bg-orange-500"
+                  : "bg-red-500"
               }`}
               onClick={toggleListening}
               disabled={isProcessing}
@@ -682,13 +682,13 @@ const AiVoiceInterface = () => {
       
       {/* Footer */}
       <div className="bg-white border-t border-gray-200 py-4 px-6 text-center">
-        <p className="text-gray-500 text-sm">© 2025 FluentMe • Powered by Hugging Face</p>
+        <p className="text-gray-500 text-sm">© 2025 FluentMe • AIR Studios</p>
       </div>
       
       {/* Settings Modal */}
       <dialog id="settings-modal" className="bg-white rounded-xl p-6 shadow-2xl border border-gray-200 w-11/12 max-w-lg mx-auto">
         <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
-          <h2 className="text-2xl font-bold text-orange-500">Voice Assistant Settings</h2>
+          <h2 className="text-2xl font-bold text-black">Voice Assistant Settings</h2>
           <button 
             onClick={() => document.getElementById('settings-modal').close()}
             className="text-gray-400 hover:text-gray-600"
@@ -728,7 +728,7 @@ const AiVoiceInterface = () => {
         <div className="flex justify-end">
           <button
             onClick={() => document.getElementById('settings-modal').close()}
-            className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md"
+            className="bg-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 px-6 rounded-lg transition-colors shadow-md"
           >
             Close
           </button>

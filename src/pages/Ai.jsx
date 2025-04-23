@@ -963,7 +963,7 @@ const AiVoiceInterface = () => {
             }}
             className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-xl transition-colors shadow-md"
           >
-            Reset App
+            Reset AI
           </button>
           
           <button
